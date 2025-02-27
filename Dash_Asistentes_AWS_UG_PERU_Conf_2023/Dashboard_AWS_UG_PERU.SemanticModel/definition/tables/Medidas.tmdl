@@ -1,0 +1,135 @@
+table Medidas
+	lineageTag: 56164a8f-5e71-497b-b309-b93bb34f0df6
+
+	measure Count_Banca =
+			
+			CALCULATE(COUNTROWS(Datos),Datos[Sector] = "Banca")
+		formatString: 0
+		lineageTag: d9702e93-97ee-4cff-82fc-7223eb8a0ec2
+
+	measure '% Femenino' =
+			
+			DIVIDE(CALCULATE(COUNTROWS(Datos),Datos[Genero] = "Femenino"),COUNTROWS(Datos),0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 02f81a50-9643-46b0-b9d1-25c23badbb4e
+
+	measure '% Masculino' =
+			
+			DIVIDE(CALCULATE(COUNTROWS(Datos),Datos[Genero] = "Masculino"),COUNTROWS(Datos),0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 06cd110f-613b-42eb-b11f-a1d484e78e39
+
+	measure Count_Retail =
+			
+			CALCULATE(COUNTROWS(Datos),Datos[Sector] = "Retail")
+		formatString: 0
+		lineageTag: 7b1d6f37-0178-47b5-8684-8452db237a30
+
+	measure Count_Seguro =
+			
+			CALCULATE(COUNTROWS(Datos),Datos[Sector] = "Seguros")
+		formatString: 0
+		lineageTag: 907319c6-7d0a-4509-afe9-ec35217e4852
+
+	measure Count_Minero =
+			
+			CALCULATE(COUNTROWS(Datos),Datos[Sector] = "Minero")
+		formatString: 0
+		lineageTag: 9e217557-0706-42bc-a522-dd7dee152726
+
+	measure Count_Energia =
+			
+			CALCULATE(COUNTROWS(Datos),Datos[Sector] = "Energia")
+		formatString: 0
+		lineageTag: 6be0e464-46ff-47e1-b054-5a4f1d334071
+
+	measure Count_Bcp =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Bcp"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: eb447925-d901-4e6a-8767-c90875625d89
+
+	measure Count_MunicipalidadLima =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Municipalidad de Lima"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: bd1c45cc-4f1d-4f0b-8f2e-c3050671b978
+
+	measure Count_Interbank =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Interbank"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: b2c0e331-5f39-4c80-be08-0bae9ae84d3f
+
+	measure Count_MiBanco =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Mi Banco"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: 2f144a34-d221-4b9f-bfa6-ba0cb679b228
+
+	measure Count_Falabella =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Falabella"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: f3971a6e-f41c-450b-854b-95911984c389
+
+	measure Count_Bbva =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Bbva"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: f97bac6e-f96f-4c4f-bc19-5662af70f44f
+
+	measure Count_Pacifico =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Pacifico"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: 8aef5cdd-eca2-4d15-bbc0-3acab832c7e0
+
+	measure Count_RimacSeguros =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Rimac Seguros"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: da73ce5a-df26-4de0-b629-395716b066a9
+
+	measure Count_Antamina =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Antamina"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: bae93757-edbb-4d05-b531-0f5caca2e2a8
+
+	measure Count_Niubiz =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Niubiz"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: 8898ebc3-0423-41c5-acd2-0754365e696f
+
+	measure Count_MinisterioPublico =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Ministerio Público"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: 844c1a97-6bc6-43ee-aa9f-691e12ec4bd4
+
+	measure Count_MinisterioInterior =
+			
+			VAR Conteo = COUNTROWS(FILTER('Datos', 'Datos'[Empresa] = "Ministerio del Interior"))
+			RETURN Conteo & " Asistentes"
+		lineageTag: ff0bd2e5-1cd1-4b72-aec2-97cde20e2368
+
+	measure TotalAsistentes = COUNTROWS('Datos')
+		formatString: 0
+		lineageTag: 6fe03e13-d681-4650-b3cc-9858225cdb19
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Columna1 = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Columna1"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

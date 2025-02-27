@@ -1,0 +1,98 @@
+table Datos
+	lineageTag: 2084cd4d-3879-42da-bbf0-1b5e09aceb11
+
+	column Nombres
+		dataType: string
+		lineageTag: abfce969-6354-43d0-8f5d-a99969506157
+		summarizeBy: none
+		sourceColumn: Nombres
+
+		annotation SummarizationSetBy = Automatic
+
+	column Apellidos
+		dataType: string
+		lineageTag: ce21ded9-72f2-4f8e-b2e0-2131a6d24e86
+		summarizeBy: none
+		sourceColumn: Apellidos
+
+		annotation SummarizationSetBy = Automatic
+
+	column Genero
+		dataType: string
+		lineageTag: b5b056cc-a319-4c9f-b13b-f1b7c321022c
+		summarizeBy: none
+		sourceColumn: Genero
+
+		annotation SummarizationSetBy = Automatic
+
+	column Educacion
+		dataType: string
+		lineageTag: 27d41233-4c55-49b3-82ef-51ab0828b2ea
+		summarizeBy: none
+		sourceColumn: Educacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tema Interes'
+		dataType: string
+		lineageTag: d8b8bae3-49c1-44f1-847f-2c0cb1d97c54
+		summarizeBy: none
+		sourceColumn: Tema Interes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cargo
+		dataType: string
+		lineageTag: c43ae712-496f-40a1-9861-8107d0dbe99e
+		summarizeBy: none
+		sourceColumn: Cargo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Empresa
+		dataType: string
+		lineageTag: 8b40d039-72b0-41ac-8657-8b8a9985bb2f
+		summarizeBy: none
+		sourceColumn: Empresa
+
+		annotation SummarizationSetBy = Automatic
+
+	column Icono
+		dataType: string
+		lineageTag: cab2c0d6-c52b-4b75-846e-e457cc13e425
+		summarizeBy: none
+		sourceColumn: Icono
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sector
+		dataType: string
+		lineageTag: 26ace82e-3b48-4b8f-8c1f-b068ff84f951
+		summarizeBy: none
+		sourceColumn: Sector
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Datos = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\gioma\Downloads\2_Asistentes_AWS_UG_PERU_2023\Dataset.xlsx"), null, true),
+				    Datos_Sheet = Origen{[Item="Datos",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Datos_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Nombres", type text}, {"Apellidos", type text}, {"Email_Personal", type text}, {"Quantity", Int64.Type}, {"Price Tier", type any}, {"Group", type any}, {"Total Paid", Int64.Type}, {"Fees Paid", Int64.Type}, {"Eventbrite Fees", Int64.Type}, {"Eventbrite Payment Processing", Int64.Type}, {"Attendee Status", type text}, {"Home Address 1", type any}, {"Home Address 2", type any}, {"Home City", type any}, {"Home State", type any}, {"Home Zip", type any}, {"Home Country", type any}, {"Telefono", Int64.Type}, {"Genero", type text}, {"DNI", Int64.Type}, {"Ciudad_Origen", type text}, {"Email_Corporativo", type text}, {"Educacion", type text}, {"Tema Interes", type text}, {"Cargo", type text}, {"Empresa", type text}, {"Icono", type text}, {"Sector", type text}, {"Column29", type any}, {"Seguros", type text}, {"Bachiller", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Column29", "Quantity", "Price Tier", "Group", "Total Paid", "Fees Paid", "Eventbrite Fees", "Eventbrite Payment Processing", "Attendee Status", "Home Address 1", "Home Address 2", "Home City", "Home State", "Home Zip", "Home Country", "Email_Personal", "Bachiller", "Seguros", "Telefono", "DNI", "Ciudad_Origen", "Email_Corporativo"}),
+				    #"Valor reemplazado" = Table.ReplaceValue(#"Columnas quitadas","Energía","Energia",Replacer.ReplaceText,{"Sector"}),
+				    #"Valor reemplazado1" = Table.ReplaceValue(#"Valor reemplazado","Migración a la Nube","Cloud Computing",Replacer.ReplaceText,{"Tema Interes"}),
+				    #"Valor reemplazado2" = Table.ReplaceValue(#"Valor reemplazado1","Asistente Digital","Marketing",Replacer.ReplaceText,{"Tema Interes"}),
+				    #"Valor reemplazado3" = Table.ReplaceValue(#"Valor reemplazado2","Cloud Computing","Cloud",Replacer.ReplaceText,{"Tema Interes"}),
+				    #"Valor reemplazado4" = Table.ReplaceValue(#"Valor reemplazado3","Data Analytics","Data",Replacer.ReplaceText,{"Tema Interes"}),
+				    #"Filas filtradas" = Table.SelectRows(#"Valor reemplazado4", each true),
+				    #"Valor reemplazado5" = Table.ReplaceValue(#"Filas filtradas","Realidad Virtual","Render 3D",Replacer.ReplaceText,{"Tema Interes"})
+				in
+				    #"Valor reemplazado5"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

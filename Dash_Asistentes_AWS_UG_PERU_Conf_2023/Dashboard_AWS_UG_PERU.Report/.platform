@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Dashboard_AWS_UG_PERU"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2e9d4b3c-a793-4030-b06d-df3fab130d72"
+  }
+}
