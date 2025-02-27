@@ -1017,7 +1017,7 @@
       "width": 1920.00
     },
     {
-      "config": "{}",
+      "config": "{\"objects\":{\"displayArea\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Middle'\"}}}}}]}}",
       "displayName": "Requisitos",
       "displayOption": 1,
       "filters": "[]",
